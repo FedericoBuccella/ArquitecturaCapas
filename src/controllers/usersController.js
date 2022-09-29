@@ -3,6 +3,10 @@ import util from'util'
 import { transporter } from '../config/mailer.js';
 import envioSms from '../twilio/sms.js'
 import mainWhatsapp from '../twilio/whatsapp.js'
+import logger from "../config/winston.js"
+import os from'os';
+const cpus = os.cpus();
+const port = process.env.PORT || 3000
 
 import * as url from 'url';
 const __filename = url.fileURLToPath(import.meta.url);

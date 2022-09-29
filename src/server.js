@@ -64,25 +64,29 @@ const registerStrategy = new LocalStrategy(
 
   async (req, username, password, done) =>{
       try{
-          const userExist = await Usuario.findOne({username})
+          const userExist = await Usuario.findOn({username})
 
-          if(userExist){
-              return done("Nombre de usuario ya creado", false)
+          if(!userExist){
+              
+            return done("Nombre de usuario ya creado", false)
+          
+          }else{
+
+            const nuevoUsuario = {
+                username: username,
+                password: hashPassword(password),
+                email: req.body.email,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                address: req.body.address,
+                edad: req.body.edad,
+                phone: req.body.phone,
+                avatar: req.file
+            }
+
+            const crearUsuario = await Usuario.create(nuevoUsuario)
+            return done(null, crearUsuario)
           }
-            console.log("asd",req.file)
-              const nuevoUsuario = {
-                  username: username,
-                  password: hashPassword(password),
-                  email: req.body.email,
-                  firstName: req.body.firstName,
-                  lastName: req.body.lastName,
-                  address: req.body.address,
-                  edad: req.body.edad,
-                  phone: req.body.phone,
-                  avatar: req.file
-              }
-              const crearUsuario = await Usuario.create(nuevoUsuario)
-              return done(null, crearUsuario)
       }catch(err){
           logger.log('Error: ', err)
           done(err)
@@ -151,3 +155,10 @@ if (iscluster && cluster.isPrimary) {
           }
       })
 }
+
+
+app.use((req, res, next)=>{
+  const { url, method } = req;
+  logger.warn(`Método ${method} URL ${url} inexistente`);
+  }
+  )
