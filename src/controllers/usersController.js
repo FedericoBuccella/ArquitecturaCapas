@@ -56,7 +56,7 @@ export const postRegister = async (req, res) =>  {
     console.log(user)
 
     await transporter.sendMail({
-      from: '"Usuario Creado!👻" <cornejo.francodavid@gmail.com>', // sender address
+      from: '"Usuario Creado!👻" <fedec.fb@gmail.com>', // sender address
       to: req.user.email, // list of receivers
       subject: "Hello ✔", // Subject line
       text: "Hello world?", // plain text body
